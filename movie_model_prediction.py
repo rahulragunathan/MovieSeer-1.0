@@ -19,7 +19,6 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
     movie_pred_feat_file = 'models/movie_prediction_features.pkl'
     movie_pred_feat = joblib.load(movie_pred_feat_file)
     no_movie_pred_feat = len(movie_pred_feat)
-    lda_prefix = 'lda_topic_'
     actor_prefix = "actor_"
     cinema_prefix = "cinematographer_"
     director_prefix = "director_"
@@ -145,6 +144,7 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             continue
 
     # plot decomposition
+    lda_prefix = 'lda_topic_'
     # load plot lda models
 #     lda_tf_file = 'models/lda_tf_vectorizer.pkl'
 #     lda_tf_vect = joblib.load(lda_tf_file)
