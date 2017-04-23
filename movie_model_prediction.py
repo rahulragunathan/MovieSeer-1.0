@@ -54,7 +54,6 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
     test_data[0,movie_pred_feat.index('adaptation')] = adaptation
     
     # actor
-    actor = [re.sub('\[[0-9]+\]',"",item) for item in actor]
     actor = [actor_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in actor]
     for item in actor:
         try:
@@ -63,7 +62,6 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             continue
             
     # cinema
-    cinema = [re.sub('\[[0-9]+\]',"",item) for item in cinema]
     cinema = [cinema_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in cinema]
     for item in cinema:
         try:
@@ -72,7 +70,6 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             continue
 
     # director
-    director = [re.sub('\[[0-9]+\]',"",item) for item in director]
     director = [director_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in director]
     for item in director:
         try:
@@ -81,7 +78,6 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             continue
 
     # distributor
-    distributor = [re.sub('\[[0-9]+\]',"",item) for item in distributor]
     distributor = [distributor_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in distributor]
     for item in distributor:
         try:
@@ -90,7 +86,6 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             continue
 
     # editor
-    editor = [re.sub('\[[0-9]+\]',"",item) for item in editor]
     editor = [editor_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in editor]
     for item in editor:
         try:
@@ -99,7 +94,6 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             continue
 
     # music
-    music = [re.sub('\[[0-9]+\]',"",item) for item in music]
     music = [music_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in music]
     for item in music:
         try:
@@ -108,7 +102,6 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             continue
 
     # producer
-    producer = [re.sub('\[[0-9]+\]',"",item) for item in producer]
     producer = [producer_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in producer]
     for item in producer:
         try:
@@ -117,7 +110,6 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             continue
 
     # writer
-    writer = [re.sub('\[[0-9]+\]',"",item) for item in writer]
     writer = [writer_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in writer]
     for item in writer:
         try:
@@ -126,7 +118,6 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             continue
 
     # story
-    story = [re.sub('\[[0-9]+\]',"",item) for item in story]
     story = [story_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in story]
     for item in story:
         try:
@@ -135,14 +126,13 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             continue
 
     # studio
-    studio = [re.sub('\[[0-9]+\]',"",item) for item in studio]
     studio = [studio_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in studio]
     for item in studio:
         try:
             test_data[0,movie_pred_feat.index(item)] = 1.0
         except ValueError:
             continue
-
+            
     # plot decomposition
     lda_prefix = 'lda_topic_'
     # load plot lda models
