@@ -132,21 +132,31 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
             test_data[0,movie_pred_feat.index(item)] = 1.0
         except ValueError:
             continue
-            
-    # plot decomposition
-    lda_prefix = 'lda_topic_'
-    # load plot lda models
-#     lda_tf_file = 'models/lda_tf_vectorizer.pkl'
-#     lda_tf_vect = joblib.load(lda_tf_file)
-#     lda_model_file = 'models/lda_model.pkl'
-#     lda_model = joblib.load(lda_model_file)
-
-#     plot_list = [plot]
-#     lda_tf = lda_tf_vect.fit_transform(plot_list)
-#     lda_W = lda_model.transform(lda_tf)
-#     print lda_W
     
-#    print test_data
+    # plot decomposition
+    
+    # load plot lda models
+    lda_tf_file = 'models/lda_tf_vectorizer.pkl'
+    lda_tf_vect = joblib.load(lda_tf_file)
+    lda_model_file = 'models/lda_model.pkl'
+    lda_model = joblib.load(lda_model_file)
+    lda_prefix = 'lda_topic_'
+
+    plot_clean = re.sub('\[[0-9]+\]',"",plot)
+    plot_clean = re.sub('[^A-Za-z0-9\s]+',"",plot_clean)
+    plot_list = pd.Series(plot_clean)
+    lda_tf = lda_tf_vect.transform(plot_list)
+    lda_W = lda_model.transform(lda_tf)
+    lda_topic_score_arr = lda_W.tolist()[0]
+    no_of_topics = len(lda_topic_score_arr)    
+    for i in range(no_of_topics):
+        try:
+            test_data[0,movie_pred_feat.index(lda_prefix+str(i))] = lda_topic_score_arr[i]
+        except ValueError:
+            continue
+    #print test_data[0,movie_pred_feat.index('lda_topic_384')]
+    
+    #print test_data
     
     model_pred = rnfc.predict(test_data)
     return model_pred[0]
