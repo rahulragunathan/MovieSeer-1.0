@@ -6,13 +6,12 @@ import datetime
 import numpy as np
 import re
 from sklearn.externals import joblib
-import json
-from sklearn.decomposition import LatentDirichletAllocation
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.decomposition import NMF, LatentDirichletAllocation
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.ensemble import RandomForestClassifier
 
 def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
-                       adaptation,actor,cinema,director,distributor, \
+                       adaptation,actor,cinematographer,director,distributor, \
                        editor,music,producer,writer,story,studio,plot):
     
     #load movie prediction model
@@ -20,7 +19,7 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
     movie_pred_feat = joblib.load(movie_pred_feat_file)
     no_movie_pred_feat = len(movie_pred_feat)
     actor_prefix = "actor_"
-    cinema_prefix = "cinematographer_"
+    cinematographer_prefix = "cinematographer_"
     director_prefix = "director_"
     distributor_prefix = "distributor_"
     editor_prefix = "editor_"
@@ -30,8 +29,8 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
     story_prefix = "story_"
     studio_prefix = "studio_"
 
-    rnfc_model_file = 'models/rnfc_model.pkl'
-    rnfc = joblib.load(rnfc_model_file)
+    model_file = 'models/rnfc_model.pkl'
+    model = joblib.load(model_file)
     
     # create test data array
     test_data = np.zeros((1, no_movie_pred_feat))
@@ -61,9 +60,9 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
         except ValueError:
             continue
             
-    # cinema
-    cinema = [cinema_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in cinema]
-    for item in cinema:
+    # cinematographer
+    cinematographer = [cinematographer_prefix + re.sub('[^A-Za-z0-9\s]+',"",item) for item in cinematographer]
+    for item in cinematographer:
         try:
             test_data[0,movie_pred_feat.index(item)] = 1.0
         except ValueError:
@@ -135,30 +134,28 @@ def GetMoviePrediction(length,cost,release_year,release_month,release_day, \
     
     # plot decomposition
     
-    # load plot lda models
-    lda_tf_file = 'models/lda_tf_vectorizer.pkl'
-    lda_tf_vect = joblib.load(lda_tf_file)
-    lda_model_file = 'models/lda_model.pkl'
-    lda_model = joblib.load(lda_model_file)
-    lda_prefix = 'lda_topic_'
+    # load plot model
+    plot_model_vect_file = 'models/lda_tf_vectorizer.pkl'
+    plot_model_vect = joblib.load(plot_model_vect_file)
+    plot_model_file = 'models/lda_model.pkl'
+    plot_model = joblib.load(plot_model_file)
+    plot_prefix = 'lda_topic_'
 
     plot_clean = re.sub('\[[0-9]+\]',"",plot)
     plot_clean = re.sub('[^A-Za-z0-9\s]+',"",plot_clean)
     plot_list = pd.Series(plot_clean)
-    lda_tf = lda_tf_vect.transform(plot_list)
-    lda_W = lda_model.transform(lda_tf)
-    lda_topic_score_arr = lda_W.tolist()[0]
-    no_of_topics = len(lda_topic_score_arr)    
+    plot_vect = plot_model_vect.transform(plot_list)
+    plot_model_W = plot_model.transform(plot_vect)
+    plot_topic_score_arr = plot_model_W.tolist()[0]
+    no_of_topics = len(plot_topic_score_arr)    
     for i in range(no_of_topics):
         try:
-            test_data[0,movie_pred_feat.index(lda_prefix+str(i))] = lda_topic_score_arr[i]
+            test_data[0,movie_pred_feat.index(plot_prefix+str(i))] = plot_topic_score_arr[i]
         except ValueError:
             continue
-    #print test_data[0,movie_pred_feat.index('lda_topic_384')]
-    
-    #print test_data
-    
-    model_pred = rnfc.predict(test_data)
+
+    # get final prediction
+    model_pred = model.predict(test_data)
     return model_pred[0]
 
 # define test data
@@ -169,7 +166,7 @@ test_release_month = 1
 test_release_day = 21
 test_adaptation = 0
 test_actor = ['Liam Neeson','Forest Whitaker','Famke Janssen','Maggie Grace','Dougray Scott','Sam Spruell','Leland Orser']
-test_cine = ['Eric Kress']
+test_cinematographer = ['Eric Kress']
 test_director = ['Olivier Megaton']
 test_distributor = ['20th Century Fox (US)','EuropaCorp (France)']
 test_editor = ['Audrey Simonaud','Nicolas Trembasiewicz']
@@ -182,7 +179,7 @@ test_plot = "In 2014, former covert operative Bryan Mills (Liam Neeson) visits h
 
 movie_pred = GetMoviePrediction(length=test_length, cost=test_cost, \
                    release_year=test_release_year, release_month=test_release_month, release_day=test_release_day, \
-                   adaptation=test_adaptation, actor=test_actor, cinema=test_cine, director=test_director, \
+                   adaptation=test_adaptation, actor=test_actor, cinematographer=test_cinematographer, director=test_director, \
                    distributor=test_distributor, editor=test_editor, music=test_music, producer=test_producer, \
                    writer=test_writer,story=test_story,studio=test_studio,plot=test_plot)
 print movie_pred
