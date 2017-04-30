@@ -9,7 +9,7 @@ This repository specifically walks through the process of creating the machine l
 
 ## The Project
 
-(Try it here!)[https://movierevenuewebsite.herokuapp.com]
+[Try it here!](https://movierevenuewebsite.herokuapp.com)
 
 ## The Data
 
