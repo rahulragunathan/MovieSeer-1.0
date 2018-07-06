@@ -7,7 +7,7 @@ MovieSeer is a tool to help greenlight a movie - to predict whether the movie wo
 
 ## The Project
 
-[Walk through the process of machine learning model behind MovieSeer!](/movies_model.ipynb)
+[The machine learning model behind MovieSeer](https://nbviewer.jupyter.org/github/rahulragunathan/MovieSeer-1.0/blob/master/movies_model.ipynb)
 
 
 [Try it here!](https://movieseer.herokuapp.com/)
