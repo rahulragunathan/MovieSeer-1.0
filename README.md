@@ -19,9 +19,9 @@ All movie data was retrieved from Wikipedia.
 
 MovieSeer was created using [Python 2.7](https://www.python.org/).
 
-Movie data was retrieved using the [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/) library.
+Movie data was retrieved using [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/).
 
-The machine learning model was created using the [Pandas](https://pandas.pydata.org/) and [Sci-Kit Learn](http://scikit-learn.org/).
+The machine learning model was created using [Pandas](https://pandas.pydata.org/) and [Sci-Kit Learn](http://scikit-learn.org/).
 
 The application is deployed and hosted on [Heroku](https://www.heroku.com/).
 
