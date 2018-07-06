@@ -5,7 +5,7 @@ Pop culture is littered with both indie cult-classics and high-profile, big-budg
 
 MovieSeer is a tool to help greenlight a movie - to predict whether the movie would be a financial success. Just enter the details of your movie (plot, budget, director, actors, etc.) and MovieSeer will provide a prediction. We also provide a variety of ways to explore our dataset to understand how the various features impact profitability. 
 
-This repository specifically walks through the process of creating the machine learning model behind MovieSeer.
+This repository walks through the process of creating the machine learning model behind MovieSeer.
 
 ## The Project
 
@@ -19,6 +19,6 @@ All movie data was retrieved from Wikipedia.
 
 This was the final Capstone project as part of UC Berkeley's Masters of Information in Data Science (MIDS) Program.
 
-* Alejandro Rojas
+* Alejandro Rojas 
 * Kin-Wai Choi
 * Rahul Ragunathan
